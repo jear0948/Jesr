@@ -1,0 +1,1 @@
+{ "appId": "com.pulse.fitness", "appName": "Pulse", "webDir": "www", "android": { "useLegacyBridge": true } }
