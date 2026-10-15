@@ -1,13 +1,19 @@
 {
   "name": "pulse-fitness",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
-  "scripts": { "setup": "bash setup-android.sh", "open": "npx cap open android" },
+  "scripts": {
+    "setup": "bash setup-android.sh",
+    "open": "npx cap open android"
+  },
   "dependencies": {
     "@capacitor/android": "^6.2.0",
     "@capacitor/core": "^6.2.0",
     "@capacitor/local-notifications": "^6.1.0",
-    "@capacitor-community/background-geolocation": "^1.2.26"
+    "@capacitor-community/background-geolocation": "^1.2.26",
+    "@capacitor/browser": "^6.0.0"
   },
-  "devDependencies": { "@capacitor/cli": "^6.2.0" }
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.0"
+  }
 }
