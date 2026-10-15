@@ -6,19 +6,19 @@
 :root[data-theme="dark"]{--bg:#101714;--card:#18221E;--ink:#E8EFEA;--mute:#93A29B;--line:#2A3832;--pine:#4DC2A0;--sky:#8AA6FF;--ember:#FF7A52;--on:#0B1411;color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(80px + env(safe-area-inset-bottom,0px));--ac:var(--pine)}
-body[data-tab=lift]{--ac:var(--sky)}body[data-tab=move]{--ac:var(--ember)}
+body[data-tab=lift]{--ac:var(--pine)}body[data-tab=move]{--ac:var(--ember)}
 main{max-width:520px;margin:0 auto;padding:16px}
 h1,.big,.t b{font-family:"Barlow Semi Condensed",system-ui,sans-serif}
-h1{font-size:30px;margin:4px 0 12px;font-weight:700}h2{font-size:17px;margin:20px 0 8px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+h1{font-size:30px;margin:4px 0 12px;font-weight:700;color:var(--ac)}h2{font-size:17px;margin:20px 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px;margin-bottom:12px}
 .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.lab{color:var(--mute);font-size:13px}.note{color:var(--mute);font-size:13px;margin:8px 0 0}
+.lab{color:var(--mute);font-size:12px;letter-spacing:.06em;text-transform:uppercase}.note{color:var(--mute);font-size:13px;margin:8px 0 0}
 .big{font-size:54px;line-height:1;font-weight:700;font-variant-numeric:tabular-nums}
 .big.s{font-size:38px}
 input,select{font:inherit;font-size:16px;width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);margin-top:6px}
 select{width:auto}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:12px 16px;background:var(--ac);color:var(--on);cursor:pointer;margin-top:8px}
+.btn{font:inherit;font-weight:700;border:0;border-radius:999px;padding:13px 18px;font-size:14px;letter-spacing:.05em;text-transform:uppercase;background:var(--ac);color:var(--on);cursor:pointer;margin-top:8px}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}.btn.sm{padding:6px 12px;margin:0}.btn.w{width:100%}
 .ico{font-size:22px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink)}.ico:disabled{opacity:.3}
 .x{border:0;background:none;color:var(--mute);font-size:18px;padding:6px;cursor:pointer}
@@ -33,6 +33,7 @@ select{width:auto}
 .rest{text-align:center;padding:8px 14px;border-radius:12px;border:1px solid var(--line)}.rest.on{background:var(--ac);color:var(--on);border-color:var(--ac)}.rest.on .lab{color:var(--on)}
 .pick{display:block;width:100%;text-align:left;font:inherit;background:none;border:0;border-top:1px solid var(--line);padding:10px 0;color:var(--ink);cursor:pointer}.pick small{display:block;color:var(--mute)}.ch{width:100%;height:auto;display:block}.ch text{font-size:9px;fill:var(--mute);text-anchor:middle}
 details summary{cursor:pointer;font-weight:600}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.wd{background:var(--bg);border-radius:14px;padding:8px 0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px;border:2px solid transparent}.wd.on{border-color:var(--ember)}.wd span{font-size:10px;color:var(--mute);text-transform:uppercase}.wd b{font-size:18px}.wd i{width:5px;height:5px;border-radius:50%;background:var(--pine)}
 nav{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
 nav button{font:inherit;font-size:13px;border:0;background:none;color:var(--mute);padding:10px 0;border-radius:10px}
 nav button.on{color:var(--on);background:var(--ac);font-weight:600}
@@ -67,7 +68,7 @@ function chart(vals,labels,goal,fmt){const w=320,h=110,n=vals.length,mx=Math.max
 vals.forEach((v,i)=>{const hh=v/mx*h;s+=`<rect x="${i*bw+bw*.15}" y="${h-hh}" width="${bw*.7}" height="${hh}" rx="2" style="fill:var(--ac)"><title>${labels[i]}: ${fmt?fmt(v):r0(v)}</title></rect>`;if(n<=7||i%5===0||i===n-1)s+=`<text x="${i*bw+bw/2}" y="${h+12}">${labels[i]}</text>`});
 if(goal)s+=`<line x1="0" x2="${w}" y1="${h-goal/mx*h}" y2="${h-goal/mx*h}" style="stroke:var(--ink)" stroke-dasharray="3 3" opacity=".5"/>`;return s+'</svg>'}
 function render(){const nv=$('#nav'),setup=!DB.pf||editP;nv.style.display=setup?'none':'';if(setup){document.body.dataset.tab='today';$('#app').innerHTML=vSetup();return}document.body.dataset.tab=tab;
-$('#nav').innerHTML=[['today','Today'],['food','Food'],['lift','Lift'],['move','Move'],['stats','Stats']].map(([k,l])=>`<button class="${tab===k?'on':''}" onclick="go('${k}')">${l}</button>`).join('');
+$('#nav').innerHTML=[['today','Today'],['food','Food'],['lift','Workout'],['move','Move'],['stats','Stats']].map(([k,l])=>`<button class="${tab===k?'on':''}" onclick="go('${k}')">${l}</button>`).join('');
 $('#app').innerHTML={today:vToday,food:vFood,lift:vLift,move:vMove,stats:vStats}[tab]()}
 function go(t){tab=t;render();scrollTo(0,0)}
 /* TODAY */
@@ -77,7 +78,7 @@ return `<h1>Hi, ${esc(DB.pf.name)}</h1><div class=card><div class=lab>${left>=0?
 <div class=g2><button class="btn" onclick="go('food')">Log food</button><button class="btn" onclick="go('lift')">Lift</button></div><button class="btn w" onclick="go('move')">Walk or run</button>
 <details class=card style="margin-top:16px"><summary>Daily targets and profile</summary><div class=g2><label class=lab>Calories<input id=gk inputmode=numeric value=${g.kcal}></label><button class="btn ghost" style="margin:0;align-self:end" onclick="editP=true;render()">Edit profile</button><label class=lab>Protein (g)<input id=gp inputmode=numeric value=${g.p}></label><label class=lab>Carbs (g)<input id=gc inputmode=numeric value=${g.c}></label><label class=lab>Fat (g)<input id=gf inputmode=numeric value=${g.f}></label></div>
 <button class="btn" onclick=saveG()>Save goals</button><p class=note>Targets come from your profile (Mifflin-St Jeor, plus your activity and goal). Calories burned use activity intensity (MET) × your body weight × time, so they are estimates.</p>
-<button class="btn ghost" onclick=wipe()>Delete all data</button></details>`}
+<button class="btn ghost" onclick=backupUI()>Backup and restore</button> <button class="btn ghost" onclick=wipe()>Delete all data</button></details>`}
 function saveG(){const v=['gk','gp','gc','gf'].map(i=>num($('#'+i).value));if(v.some(x=>isNaN(x))||!v[0]){toast('Enter valid numbers');return}
 Object.assign(DB.g,{kcal:v[0],p:v[1],c:v[2],f:v[3]});save();render();toast('Goals saved')}
 function wipe(){ask('Delete all food, workouts and runs on this device?','Delete all',()=>{DB.food=[];DB.wk=[];DB.mv=[];W=null;DB.cur=null;save();render()})}
@@ -227,10 +228,41 @@ Ketchup|112|1.2|26|0.1|tbsp|17
 Soy sauce|53|8|5|0.6|tbsp|16`.split('\n').map(l=>{const a=l.split('|');return{n:a[0],k:+a[1],p:+a[2],c:+a[3],f:+a[4],s:a[5],g:+a[6]}});
 const MEALS=['Breakfast','Lunch','Dinner','Snack'],defMeal=()=>{const h=new Date().getHours();return h<11?'Breakfast':h<15?'Lunch':h<18?'Snack':'Dinner'};
 let FS=null;
-function searchCard(){return `<div class=card><div class=lab>Search foods</div><input id=fs type=search placeholder="Try chicken, rice, banana, adobo…" oninput=doSearch() autocomplete=off><div id=sr></div><div id=sp></div><p class=note>Nutrition is filled in automatically. Values are typical averages and include Filipino dishes; brands and home recipes vary.</p></div>`}
+function searchCard(){return `<div class=card>${scanBtns()}<div class=lab>Search foods</div><input id=fs type=search placeholder="Try chicken, rice, banana, adobo…" oninput=doSearch() autocomplete=off><div id=sr></div><div id=sp></div><p class=note>Nutrition is filled in automatically. Values are typical averages and include Filipino dishes; brands and home recipes vary.</p></div>`}
+let SMP=null,SC=[];
+try{if(window.claude&&claude.use)claude.use('sample').then(s=>{SMP=s;if(s&&tab==='food')render()}).catch(()=>{})}catch(e){}
+const SCAN_P='You are a nutrition estimator. Look at this photo of food. Identify each distinct food or drink and estimate its portion in grams and its total nutrition for that portion. Prefer Filipino dish names when they apply. Reply with ONLY JSON, no other text, in this shape: {"items":[{"name":"string","grams":number,"kcal":number,"protein":number,"carbs":number,"fat":number}]}. If the photo has no food, reply {"items":[]}.';
+const scanBtns=()=>SMP?`<div class=g2><label class=btn style="text-align:center;margin:0"><input type=file accept="image/*" capture=environment style="display:none" onchange="scanF(this.files[0]);this.value=''">Camera</label><label class="btn ghost" style="text-align:center;margin:0"><input type=file accept="image/*" style="display:none" onchange="scanF(this.files[0]);this.value=''">Gallery</label></div><button class="btn ghost w" style="margin-top:8px" onclick=pasteScan()>Paste scan result</button><p class=note style="margin-bottom:14px">Scan a meal with AI. It estimates calories and macros from the photo. Check the portions.</p>`:(PL('Browser')?`<button class="btn w" onclick=openScan()>Scan with camera</button><button class="btn ghost w" onclick=pasteScan()>Paste scan result</button><p class=note style="margin-bottom:14px">Scan opens the web version in your browser, where the camera AI works. There, tap Copy scan code, then come back here and tap Paste scan result.</p>`:'');
+const WEB='https://claude.ai/artifact/WiP2S7eyvEYFv5ZqRvNkq6';
+function openScan(){const b=PL('Browser');if(b)b.open({url:WEB});else window.open(WEB,'_blank')}
+function pasteScan(){try{navigator.clipboard.readText().then(t=>importScan(t,true),()=>pasteBox())}catch(e){pasteBox()}}
+function pasteBox(){$('#sr').innerHTML='';$('#sp').innerHTML='<textarea id=ps placeholder="Paste the scan code here" style="width:100%;height:90px;font-size:12px;margin-top:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)"></textarea><button class="btn w" onclick=importBox()>Import</button>'}
+function importBox(){importScan($('#ps').value)}
+function importScan(t,quiet){t=(t||'').trim();let a=null;try{if(t.startsWith('PULSE1:'))a=JSON.parse(decodeURIComponent(escape(atob(t.slice(7)))))}catch(e){}
+if(!Array.isArray(a)||!a.length){if(quiet){toast('No scan code on the clipboard. Paste it here.');pasteBox()}else toast('That is not a valid scan code');return}
+showScan({items:a.slice(0,12).map(x=>({name:x.n,grams:x.g,kcal:x.k,protein:x.p,carbs:x.c,fat:x.f}))})}
+function copySC(){const a=SC.filter(x=>x.on&&x.g>0).map(x=>{const s=scs(x);return{n:x.n,g:r0(x.g),k:r0(s.k),p:r0(s.p*10)/10,c:r0(s.c*10)/10,f:r0(s.f*10)/10}});if(!a.length){toast('Select at least one item');return}
+const code='PULSE1:'+btoa(unescape(encodeURIComponent(JSON.stringify(a)))),o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:9;padding:16px';
+o.innerHTML='<div class=card style="max-width:420px;width:100%;margin:0"><b>Scan code</b><p class=note>Copy this code, open the other version of Pulse (web or app), go to Food and tap Paste scan result.</p><textarea id=sk readonly style="width:100%;height:110px;font-size:12px;margin-top:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)"></textarea><div class=row style="margin-top:8px"><button class="btn ghost sm" id=kc>Close</button><button class="btn sm" id=ky>Copy</button></div></div>';
+document.body.appendChild(o);const t=o.querySelector('#sk');t.value=code;t.select();o.querySelector('#kc').onclick=()=>o.remove();
+o.querySelector('#ky').onclick=()=>{t.select();try{navigator.clipboard.writeText(code).then(()=>toast('Copied'),()=>{document.execCommand('copy');toast('Copied')})}catch(e){document.execCommand('copy')}}}
+const canAI=()=>!!SMP;
+const aiErr=e=>{const c=e&&e.code;return c==='not_granted'?'AI needs your permission. Try again and allow it.':c==='rate_limited'?'Too many requests. Wait a moment and try again.':'Could not get a result. Try again, or use a clearer photo.'};
+const FOOD_P=q=>'Estimate the nutrition of one typical serving of this food: "'+q.replace(/"/g,"'")+'". Prefer Filipino dishes when they apply. Reply with ONLY JSON, no other text: {"items":[{"name":"string","grams":number,"kcal":number,"protein":number,"carbs":number,"fat":number}]} with totals for the whole serving.';
+async function aiSearch(){const q=$('#fs').value.trim();if(q.length<2)return;$('#sr').innerHTML='';$('#sp').innerHTML='<p class=note>Looking up nutrition…</p>';
+try{const r=await SMP.json(FOOD_P(q),{cache:true});showScan(r)}catch(e){$('#sp').innerHTML='<p class=note>'+aiErr(e)+'</p>'}}
+function shrink(f){return new Promise((ok,no)=>{const u=URL.createObjectURL(f),im=new Image();im.onload=()=>{const s=Math.min(1,1024/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=r0(im.width*s);c.height=r0(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>b?ok(b):no(new Error('blob')),'image/jpeg',.8)};im.onerror=()=>no(new Error('img'));im.src=u})}
+async function scanF(f){if(!f||!canAI())return;const box=$('#sp');$('#sr').innerHTML='';box.innerHTML='<p class=note>Analysing your photo…</p>';
+try{const b=await shrink(f);const r=await SMP.json(SCAN_P,{images:[b],cache:false});showScan(r)}catch(e){box.innerHTML='<p class=note>'+aiErr(e)+'</p>'}}
+function showScan(r){const a=r&&Array.isArray(r.items)?r.items:[];if(!a.length){$('#sp').innerHTML='<p class=note>No food found in the photo. Try a closer, brighter shot.</p>';return}
+SC=a.slice(0,12).map(x=>{const g=Math.max(1,+x.grams||100);return{n:String(x.name||'Food').slice(0,60),g,g0:g,k:+x.kcal||0,p:+x.protein||0,c:+x.carbs||0,f:+x.fat||0,on:true}});
+$('#sp').innerHTML=`<div class=item><b>Scan result</b><small>AI estimate. Change the grams if the portion looks off.</small></div>${SC.map((x,i)=>`<div class=item><label class=row style="justify-content:flex-start;gap:8px"><input type=checkbox style="width:auto;margin:0" checked onchange="SC[${i}].on=this.checked;calcS()"><span>${esc(x.n)}</span></label><div class=row style="margin-top:6px"><input style="width:90px" inputmode=decimal value="${r0(x.g)}" oninput="SC[${i}].g=num(this.value)||0;calcS()"><span class=lab>grams</span><small id=si${i}></small></div></div>`).join('')}<div id=st class=tiles style="margin:10px 0"></div><select id=sm style="width:100%">${MEALS.map(m=>`<option ${m===defMeal()?'selected':''}>${m}</option>`).join('')}</select><button class="btn w" onclick=addSC()>Add to ${dl(fd).toLowerCase()}</button><button class="btn ghost w" onclick=copySC()>Copy scan code</button>`;calcS()}
+function scs(x){const f=x.g/x.g0;return{k:x.k*f,p:x.p*f,c:x.c*f,f:x.f*f}}
+function calcS(){const t={k:0,p:0,c:0,f:0};SC.forEach((x,i)=>{const s=scs(x);$('#si'+i).textContent=r0(s.k)+' kcal';if(x.on)for(const q in t)t[q]+=s[q]});$('#st').innerHTML=tile('kcal',r0(t.k))+tile('protein g',r0(t.p))+tile('carbs g',r0(t.c))+tile('fat g',r0(t.f))}
+function addSC(){const a=SC.filter(x=>x.on&&x.g>0);if(!a.length){toast('Select at least one item');return}a.forEach(x=>{const s=scs(x);DB.food.push({id:uid(),d:fd,m:$('#sm').value,n:x.n+' ('+r0(x.g)+' g, scan)',k:s.k,p:s.p,c:s.c,f:s.f})});save();SC=[];render();toast('Added '+a.length+' item'+(a.length>1?'s':''))}
 function doSearch(){const q=$('#fs').value.trim().toLowerCase(),box=$('#sr');$('#sp').innerHTML='';FS=null;if(q.length<2){box.innerHTML='';return}
 const ws=q.split(/\s+/),r=FD.map((x,i)=>({x,i,sc:ws.every(w=>x.n.toLowerCase().includes(w))?(x.n.toLowerCase().startsWith(q)?0:1):9})).filter(o=>o.sc<9).sort((a,b)=>a.sc-b.sc).slice(0,10);
-box.innerHTML=r.length?r.map(o=>`<button class=pick onclick="pickF(${o.i})">${esc(o.x.n)}<small>${esc(o.x.s)} (${o.x.g} g) · ${r0(o.x.k*o.x.g/100)} kcal</small></button>`).join(''):'<p class=note>No match. Use Add manually below.</p>'}
+box.innerHTML=(r.length?r.map(o=>`<button class=pick onclick="pickF(${o.i})">${esc(o.x.n)}<small>${esc(o.x.s)} (${o.x.g} g) · ${r0(o.x.k*o.x.g/100)} kcal</small></button>`).join(''):'<p class=note>No match in the built-in list. Use Add manually below.</p>')+(canAI()?'<button class="btn ghost w" onclick=aiSearch()>Search with AI</button>':'')}
 function pickF(i){FS=FD[i];$('#sr').innerHTML='';$('#sp').innerHTML=`<div class=item><b>${esc(FS.n)}</b></div><div class=g2><label class=lab>Amount<input id=sq inputmode=decimal value=1 oninput=calcF()></label><label class=lab>Unit<select id=su style="width:100%" onchange=unitF()><option value=sv>${esc(FS.s)} (${FS.g} g)</option><option value=g>grams</option></select></label></div><div id=sn class=tiles style="margin:10px 0"></div><select id=sm style="width:100%">${MEALS.map(m=>`<option ${m===defMeal()?'selected':''}>${m}</option>`).join('')}</select><button class="btn w" onclick=addFS()>Add to ${dl(fd).toLowerCase()}</button>`;calcF()}
 function fac(){const q=num($('#sq').value);return isNaN(q)?0:($('#su').value==='sv'?q*FS.g:q)/100}
 function calcF(){const f=fac(),m=v=>r0(v*f*10)/10;$('#sn').innerHTML=tile('kcal',r0(FS.k*f))+tile('protein g',m(FS.p))+tile('carbs g',m(FS.c))+tile('fat g',m(FS.f))}
@@ -256,12 +288,40 @@ const RT=[['Push','Bench Press,Incline Dumbbell Press,Overhead Press,Lateral Rai
 function libEx(){$('#le').innerHTML=LIB[$('#lg').value].split(',').map(n=>`<option>${n}</option>`).join('')}
 function startR(i){startW();W.ex=RT[i][1].split(',').map(n=>({n,sets:[]}));saveW();render()}
 /* LIFT */
+let RE=null;
+function seedRt(){DB.rt=RT.map(r=>({id:uid(),n:r[0],ex:r[1].split(',').map(n=>({n,rest:90,sets:[{k:0,r:10},{k:0,r:10},{k:0,r:10}]}))}));save()}
+function streak(){const s=new Set(DB.wk.map(w=>w.d));let d=new Date(),c=0;if(!s.has(dk(d)))d=addD(d,-1);while(s.has(dk(d))){c++;d=addD(d,-1)}return c}
+function vDash(){const s=new Set(DB.wk.map(w=>w.d)),now=new Date(),mon=addD(now,-((now.getDay()+6)%7)),st=streak(),h=[...DB.wk].reverse();
+return `<h1>Workout</h1><div class=card><div class=row style="justify-content:flex-start;gap:14px"><div style="width:64px;height:64px;border-radius:50%;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700">${st||'–'}</div><div><div class=lab>Streak status</div><b style="font-size:20px;color:var(--ember)">${st?st+'-day streak':'No streak'}</b></div></div>
+<div class=lab style="margin:14px 0 8px">This week</div><div class=wk>${[0,1,2,3,4,5,6].map(i=>{const d=addD(mon,i),k=dk(d);return `<div class="wd${k===dk()?' on':''}"><span>${d.toLocaleDateString(undefined,{weekday:'short'})}</span><b>${d.getDate()}</b><i style="opacity:${s.has(k)?1:.15}"></i></div>`}).join('')}</div></div>
+<button class="btn w" onclick=startW()>+ Start empty workout</button>
+<div class=row style="margin-top:22px"><h2 style="margin:0">Your routines</h2><button class="btn sm ghost" onclick=newRt()>+ New routine</button></div>
+${DB.rt.map(r=>`<div class=card style="margin-top:12px"><div class=row><b style="font-size:20px;color:var(--ember)">${esc(r.n)}</b><button class=x onclick="editRt('${r.id}')" aria-label="Edit routine">✎</button></div><div class=lab>${r.ex.length} exercises · ${sum(r.ex,e=>e.sets.length)} sets</div><div class=row style="justify-content:flex-end"><button class="btn sm" onclick="startRt('${r.id}')">Start →</button></div></div>`).join('')||'<p class=note>No routines yet.</p>'}
+<h2>History</h2>${h.length?`<div class=card>${h.slice(0,40).map(w=>`<div class="item row"><div>${esc(w.ex.map(e=>e.n).join(', '))}<small>${dl(w.d)} · ${mmss(w.dur)} total · ${mmss(w.rest)} rest · ${sum(w.ex,e=>e.sets.length)} sets · ${r0(w.vol)} kg volume</small></div><button class=x onclick="delW('${w.id}')" aria-label="Delete">✕</button></div>`).join('')}</div>`:'<p class=note>No workouts yet.</p>'}`}
+function startRt(id){const r=DB.rt.find(x=>x.id===id);if(!r)return;W={start:null,name:r.n,ex:r.ex.map(e=>({n:e.n,rest:e.rest,tg:e.sets.map(s=>({k:s.k,r:s.r})),sets:[]})),restEnd:null,restStart:0,restTotal:0};saveW();render()}
+function newRt(){RE={id:uid(),n:'',ex:[],isNew:1};render()}
+function editRt(id){RE=JSON.parse(JSON.stringify(DB.rt.find(x=>x.id===id)));render()}
+function exStat(n){const lim=dk(addD(new Date(),-90)),a=DB.wk.filter(w=>w.d>=lim).map(w=>w.ex.filter(e=>e.n.toLowerCase()===n.toLowerCase())).filter(e=>e.length),st=a.flat().flatMap(e=>e.sets);return{s:a.length,v:r0(sum(st,x=>x.r*x.k)),r:sum(st,x=>x.r)}}
+function vRoutine(){return `<div class=row><button class=ico onclick="RE=null;render()" aria-label="Back">‹</button><b class=lab>Routine</b><span style="width:44px"></span></div>
+<div class=card style="margin-top:12px"><label class=lab>Routine name<input value="${esc(RE.n)}" oninput="RE.n=this.value" placeholder="e.g. Push day"></label><div class=lab style="margin-top:12px">Add exercise</div><div class=g2><select id=lg style="width:100%" onchange=libEx()>${Object.keys(LIB).map(g=>`<option>${g}</option>`).join('')}</select><select id=le style="width:100%">${LIB.Chest.split(',').map(n=>`<option>${n}</option>`).join('')}</select></div><button class="btn w" onclick=reAdd()>+ Add exercise</button><input id=nex placeholder="Or type your own exercise"><button class="btn ghost w" onclick=reAdd(1)>Add my own</button></div>
+${RE.ex.map((e,i)=>{const t=exStat(e.n);return `<div class=card><div class=row><b style="color:var(--pine);font-size:19px">${esc(e.n)}</b><button class=x onclick="reDel(${i})" aria-label="Remove exercise">✕</button></div><div class=lab>Last 3 months: ${t.s} sessions · ${t.v} kg · ${t.r} reps</div><div class=row style="margin-top:8px"><span class=lab>Rest (seconds)</span><input style="width:100px;text-align:center" inputmode=numeric value="${e.rest}" oninput="RE.ex[${i}].rest=r0(num(this.value))||0"></div>${e.sets.map((s,j)=>`<div class=row style="margin-top:8px"><b>${j+1}</b><input inputmode=decimal placeholder=kg value="${s.k}" oninput="RE.ex[${i}].sets[${j}].k=num(this.value)||0"><input inputmode=numeric placeholder=reps value="${s.r}" oninput="RE.ex[${i}].sets[${j}].r=r0(num(this.value))||0"><button class=x onclick="reSet(${i},${j})" aria-label="Remove set">−</button></div>`).join('')}<button class="btn ghost w" onclick="reSet(${i})">+ Add set</button></div>`}).join('')}
+<button class="btn w" onclick=reSave()>Save routine</button>${RE.isNew?'':`<button class="btn ghost w" onclick=reDelRt()>Delete routine</button>`}`}
+function reAdd(c){const n=c?$('#nex').value.trim():$('#le').value;if(!n){toast('Enter an exercise name');return}RE.ex.push({n,rest:DB.g.rest,sets:[{k:0,r:10},{k:0,r:10},{k:0,r:10}]});render()}
+function reDel(i){RE.ex.splice(i,1);render()}
+function reSet(i,j){const s=RE.ex[i].sets;if(j===undefined){const l=s[s.length-1]||{k:0,r:10};s.push({k:l.k,r:l.r})}else s.splice(j,1);render()}
+function reSave(){if(!RE.n.trim()){toast('Name your routine');return}if(!RE.ex.length){toast('Add at least one exercise');return}RE.ex.forEach(e=>{if(!e.sets.length)e.sets.push({k:0,r:10})});const{isNew,...r}=RE;r.n=r.n.trim();const i=DB.rt.findIndex(x=>x.id===r.id);if(i<0)DB.rt.push(r);else DB.rt[i]=r;RE=null;save();render();toast('Routine saved')}
+function reDelRt(){ask('Delete this routine?','Delete',()=>{DB.rt=DB.rt.filter(x=>x.id!==RE.id);RE=null;save();render()})}
+function backupUI(){const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:9;padding:16px';
+o.innerHTML=`<div class=card style="max-width:420px;width:100%;margin:0"><b>Backup and restore</b><p class=note>Tap Copy, then paste the text into Notes or a message to yourself. To restore, paste your saved text here and tap Restore.</p><textarea id=bk style="width:100%;height:140px;font-size:12px;margin-top:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)">${esc(JSON.stringify(DB))}</textarea><div class=row style="margin-top:8px"><button class="btn ghost sm" id=bc>Close</button><button class="btn sm" id=by>Copy</button><button class="btn sm" id=br>Restore</button></div></div>`;
+document.body.appendChild(o);const t=o.querySelector('#bk');o.querySelector('#bc').onclick=()=>o.remove();
+o.querySelector('#by').onclick=()=>{t.select();try{navigator.clipboard.writeText(t.value).then(()=>toast('Copied'),()=>{document.execCommand('copy');toast('Copied')})}catch(e){document.execCommand('copy')}};
+o.querySelector('#br').onclick=()=>{try{const d=JSON.parse(t.value);if(!d||!Array.isArray(d.food)||!Array.isArray(d.wk)||!Array.isArray(d.mv))throw 0;DB=Object.assign({food:[],wk:[],mv:[],cur:null,pf:null},d);DB.g=Object.assign({kcal:2200,p:140,c:250,f:70,kg:70,rest:90},d.g||{});W=DB.cur;save();o.remove();render();toast('Restored')}catch(e){toast('That text is not a valid backup')}}}
 const restSel=()=>`<label class=lab>Rest between sets <select onchange="DB.g.rest=+this.value;save()">${[30,45,60,90,120,180,240].map(s=>`<option value=${s} ${DB.g.rest===s?'selected':''}>${s<60?s+' s':s/60+' min'}</option>`).join('')}</select></label>`;
-function vLift(){
+function vLift(){if(!DB.rt)seedRt();if(RE)return vRoutine();if(!W)return vDash();
 if(W){const exs=[...new Set(DB.wk.flatMap(w=>w.ex.map(e=>e.n)))];
 return `<h1>Workout</h1><div class=card><div class=row><div><div class=lab>Workout time</div><div class="big s" id=wt>${W.start?mmss((Date.now()-W.start)/1000):'0:00'}</div>${W.start?`<div class=lab>Started ${new Date(W.start).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`:''}</div><div class=rest><div class=lab>Rest timer</div><div class="big s" id=rt>Go</div></div></div>
 <div class=row style="margin-top:8px">${restSel()}<button id=skip class="btn sm" onclick=skipR() hidden>Skip rest</button></div>${W.start?`<div class=row style="margin-top:8px"><label class=lab><input type=checkbox style="width:auto;margin:0 8px 0 0" ${DB.g.auto?'checked':''} onchange="DB.g.auto=this.checked;save()">Start rest timer automatically after each set</label><button class="btn sm" onclick=startRest()>Start rest</button></div>`:'<button class="btn w" onclick=beginW()>Start timer</button><p class=note>The workout timer stays at 0:00 until you tap Start timer. Add your exercises first if you like.</p>'}</div>
-${W.ex.map((e,i)=>{const l=e.sets[e.sets.length-1]||{};return `<div class=card><div class=row><b>${esc(e.n)}</b><button class=x onclick="rmEx(${i})" aria-label="Remove exercise">✕</button></div>
+${W.ex.map((e,i)=>{const l=(e.tg&&e.tg[e.sets.length])||e.sets[e.sets.length-1]||{};return `<div class=card><div class=row><b>${esc(e.n)}</b><button class=x onclick="rmEx(${i})" aria-label="Remove exercise">✕</button></div>
 ${e.sets.map((s,j)=>`<div class=item>Set ${j+1} · ${s.r} reps${s.k?' × '+s.k+' kg':''}</div>`).join('')}
 <div class=g2><label class=lab>Reps or seconds<input id=r${i} inputmode=numeric value="${l.r||''}"></label><label class=lab>Weight (kg)<input id=k${i} inputmode=decimal value="${l.k??''}"></label></div>
 <div class=row><button class="btn" onclick="logS(${i})">Log set</button>${e.sets.length?`<button class="btn ghost" onclick="undoS(${i})">Undo last set</button>`:''}</div></div>`}).join('')}
@@ -272,12 +332,12 @@ return `<h1>Lift</h1><div class=card><p style="margin-top:0">Plan your exercises
 <h2>History</h2>${h.length?`<div class=card>${h.slice(0,40).map(w=>`<div class="item row"><div>${esc(w.ex.map(e=>e.n).join(', '))}<small>${dl(w.d)} · ${mmss(w.dur)} total · ${mmss(w.rest)} rest · ${sum(w.ex,e=>e.sets.length)} sets · ${r0(w.vol)} kg volume</small></div><button class=x onclick="delW('${w.id}')" aria-label="Delete">✕</button></div>`).join('')}</div>`:'<p class=note>No workouts yet. Start one above.</p>'}`}
 function beginW(){W.start=Date.now();saveW();render()}
 function notifyRest(){const ln=PL('LocalNotifications');if(!ln)return;ln.cancel({notifications:[{id:1}]}).catch(()=>{});if(W&&W.restEnd)ln.schedule({notifications:[{id:1,title:'Rest is over',body:'Time for your next set',schedule:{at:new Date(W.restEnd),allowWhileIdle:true}}]}).catch(()=>{})}
-function startRest(){const n=Date.now();if(W.restEnd)W.restTotal+=n-W.restStart;W.restStart=n;W.restEnd=n+DB.g.rest*1000;saveW();notifyRest();render()}
+function startRest(sec){const n=Date.now();if(W.restEnd)W.restTotal+=n-W.restStart;W.restStart=n;W.restEnd=n+(sec||DB.g.rest)*1000;saveW();notifyRest();render()}
 function startW(){W={start:null,ex:[],restEnd:null,restStart:0,restTotal:0};saveW();render()}
 function addEx(l){const n=l?$('#le').value:$('#nex').value.trim();if(!n){toast('Enter an exercise name');return}W.ex.push({n,sets:[]});saveW();render()}
 function rmEx(i){const go=()=>{W.ex.splice(i,1);saveW();render()};W.ex[i].sets.length?ask('Remove this exercise and its sets?','Remove',go):go()}
 function logS(i){if(!W.start){toast('Tap Start timer first');return}const r=num($('#r'+i).value),k=num($('#k'+i).value);if(isNaN(r)||r<1){toast('Enter the number of reps');return}
-W.ex[i].sets.push({r:r0(r),k:isNaN(k)?0:k});if(DB.g.auto)startRest();else{saveW();render()}}
+W.ex[i].sets.push({r:r0(r),k:isNaN(k)?0:k});if(DB.g.auto)startRest(W.ex[i].rest);else{saveW();render()}}
 function undoS(i){W.ex[i].sets.pop();saveW();render()}
 function skipR(){if(W.restEnd){W.restTotal+=Date.now()-W.restStart;W.restEnd=null;saveW();notifyRest();render()}}
 function discW(){ask('Discard this workout? Nothing will be saved.','Discard',()=>{W=null;saveW();notifyRest();render()})}
