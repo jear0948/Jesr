@@ -34,8 +34,8 @@ select{width:auto}
 .pick{display:block;width:100%;text-align:left;font:inherit;background:none;border:0;border-top:1px solid var(--line);padding:10px 0;color:var(--ink);cursor:pointer}.pick small{display:block;color:var(--mute)}.ch{width:100%;height:auto;display:block}.ch text{font-size:9px;fill:var(--mute);text-anchor:middle}
 details summary{cursor:pointer;font-weight:600}
 .wk{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.wd{background:var(--bg);border-radius:14px;padding:8px 0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px;border:2px solid transparent}.wd.on{border-color:var(--ember)}.wd span{font-size:10px;color:var(--mute);text-transform:uppercase}.wd b{font-size:18px}.wd i{width:5px;height:5px;border-radius:50%;background:var(--pine)}
-nav{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
-nav button{font:inherit;font-size:13px;border:0;background:none;color:var(--mute);padding:10px 0;border-radius:10px}
+nav{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(6,1fr);background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{font:inherit;font-size:12px;border:0;background:none;color:var(--mute);padding:10px 0;border-radius:10px}
 nav button.on{color:var(--on);background:var(--ac);font-weight:600}
 #toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90%}#toast.on{opacity:1}
 </style></head><body><main id="app"></main>
@@ -68,8 +68,8 @@ function chart(vals,labels,goal,fmt){const w=320,h=110,n=vals.length,mx=Math.max
 vals.forEach((v,i)=>{const hh=v/mx*h;s+=`<rect x="${i*bw+bw*.15}" y="${h-hh}" width="${bw*.7}" height="${hh}" rx="2" style="fill:var(--ac)"><title>${labels[i]}: ${fmt?fmt(v):r0(v)}</title></rect>`;if(n<=7||i%5===0||i===n-1)s+=`<text x="${i*bw+bw/2}" y="${h+12}">${labels[i]}</text>`});
 if(goal)s+=`<line x1="0" x2="${w}" y1="${h-goal/mx*h}" y2="${h-goal/mx*h}" style="stroke:var(--ink)" stroke-dasharray="3 3" opacity=".5"/>`;return s+'</svg>'}
 function render(){const nv=$('#nav'),setup=!DB.pf||editP;nv.style.display=setup?'none':'';if(setup){document.body.dataset.tab='today';$('#app').innerHTML=vSetup();return}document.body.dataset.tab=tab;
-$('#nav').innerHTML=[['today','Today'],['food','Food'],['lift','Workout'],['move','Move'],['stats','Stats']].map(([k,l])=>`<button class="${tab===k?'on':''}" onclick="go('${k}')">${l}</button>`).join('');
-$('#app').innerHTML={today:vToday,food:vFood,lift:vLift,move:vMove,stats:vStats}[tab]()}
+$('#nav').innerHTML=[['today','Today'],['food','Food'],['lift','Workout'],['move','Move'],['body','Body'],['stats','Stats']].map(([k,l])=>`<button class="${tab===k?'on':''}" onclick="go('${k}')">${l}</button>`).join('');
+$('#app').innerHTML={today:vToday,food:vFood,lift:vLift,move:vMove,body:vBody,stats:vStats}[tab]()}
 function go(t){tab=t;render();scrollTo(0,0)}
 /* TODAY */
 function vToday(){const d=dk(),t=dayFood(d),g=DB.g,left=g.kcal-t.k,wk=DB.wk.filter(x=>x.d===d);
@@ -77,11 +77,11 @@ return `<h1>Hi, ${esc(DB.pf.name)}</h1><div class=card><div class=lab>${left>=0?
 <div class=tiles>${tile('kcal burned',r0(burned(d)))}${tile('km walked or run',km(d).toFixed(2))}${tile('workouts',wk.length)}${tile('lifting time',mmss(sum(wk,x=>x.dur)))}</div>
 <div class=g2><button class="btn" onclick="go('food')">Log food</button><button class="btn" onclick="go('lift')">Lift</button></div><button class="btn w" onclick="go('move')">Walk or run</button>
 <details class=card style="margin-top:16px"><summary>Daily targets and profile</summary><div class=g2><label class=lab>Calories<input id=gk inputmode=numeric value=${g.kcal}></label><button class="btn ghost" style="margin:0;align-self:end" onclick="editP=true;render()">Edit profile</button><label class=lab>Protein (g)<input id=gp inputmode=numeric value=${g.p}></label><label class=lab>Carbs (g)<input id=gc inputmode=numeric value=${g.c}></label><label class=lab>Fat (g)<input id=gf inputmode=numeric value=${g.f}></label></div>
-<button class="btn" onclick=saveG()>Save goals</button><p class=note>Targets come from your profile (Mifflin-St Jeor, plus your activity and goal). Calories burned use activity intensity (MET) × your body weight × time, so they are estimates.</p><p class=note>App version 1.7</p>
+<button class="btn" onclick=saveG()>Save goals</button><p class=note>Targets come from your profile (Mifflin-St Jeor, plus your activity and goal). Calories burned use activity intensity (MET) × your body weight × time, so they are estimates.</p><p class=note>App version 1.8</p>
 <button class="btn ghost" onclick=backupUI()>Backup and restore</button> <button class="btn ghost" onclick=wipe()>Delete all data</button></details>`}
 function saveG(){const v=['gk','gp','gc','gf'].map(i=>num($('#'+i).value));if(v.some(x=>isNaN(x))||!v[0]){toast('Enter valid numbers');return}
 Object.assign(DB.g,{kcal:v[0],p:v[1],c:v[2],f:v[3]});save();render();toast('Goals saved')}
-function wipe(){ask('Delete all food, workouts and runs on this device?','Delete all',()=>{DB.food=[];DB.wk=[];DB.mv=[];W=null;DB.cur=null;save();render()})}
+function wipe(){ask('Delete all food, workouts and runs on this device?','Delete all',()=>{DB.food=[];DB.wk=[];DB.mv=[];DB.bd=[];W=null;DB.cur=null;save();render()})}
 function vSetup(){const p=DB.pf||{sex:'f',act:1.375,goal:0},o=(v,l,c)=>`<option value="${v}" ${String(c)===String(v)?'selected':''}>${l}</option>`;
 return `<h1>${DB.pf?'Edit profile':'Welcome to Pulse'}</h1><div class=card><p style="margin-top:0">Your details set your daily calorie and macro targets and make calories-burned estimates more accurate. They stay on this device.</p>
 <label class=lab>Name<input id=pn value="${esc(p.name||'')}" autocomplete=given-name></label>
@@ -372,6 +372,33 @@ if(k<0.02){toast('Too short to save');render();return}pushM(dk(),ty,k,sec);rende
 const pushM=(d,ty,k,sec)=>{const v=Math.min(Math.max(k/(sec/3600),2),ty==='run'?25:8),met=ty==='run'?Math.max(6.5,v):1.5+.4*v;DB.mv.push({id:uid(),d,ty,km:k,sec,kcal:r0(met*DB.g.kg*sec/3600)});save()};
 function addMan(){const k=num($('#mk2').value),m=num($('#mm2').value),d=$('#md2').value;if(isNaN(k)||isNaN(m)||!k||!m||!d){toast('Enter date, distance and time');return}pushM(d>dk()?dk():d,$('#mt2').value,k,m*60);render();toast('Saved')}
 function delM(id){DB.mv=DB.mv.filter(x=>x.id!==id);save();render()}
+/* BODY */
+const BM=[['waist','Waist / tummy'],['chest','Chest'],['hips','Hips'],['bicep','Bicep'],['thigh','Thigh'],['shoulders','Shoulders'],['neck','Neck'],['calf','Calf']];
+let bsel='waist',bd=dk();
+const bsorted=()=>[...(DB.bd||[])].sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0);
+function line(pts,u){if(pts.length<2)return '<p class=note style="margin:0">Log at least two entries to see the chart.</p>';
+const w=320,h=120,vs=pts.map(p=>p.v),mn=Math.min(...vs),mx=Math.max(...vs),pad=(mx-mn)||1,lo=mn-pad*.15,hi=mx+pad*.15,t0=pk(pts[0].d).getTime(),sp=(pk(pts[pts.length-1].d).getTime()-t0)||1;
+const X=p=>8+(pk(p.d).getTime()-t0)/sp*(w-16),Y=p=>h-(p.v-lo)/(hi-lo)*h;
+let s=`<svg class=ch viewBox="0 0 ${w} ${h+16}" role="img" aria-label="Line chart"><polyline fill="none" style="stroke:var(--ac)" stroke-width="2.5" stroke-linejoin="round" points="${pts.map(p=>X(p).toFixed(1)+','+Y(p).toFixed(1)).join(' ')}"/>`;
+pts.forEach(p=>{s+=`<circle cx="${X(p).toFixed(1)}" cy="${Y(p).toFixed(1)}" r="3.5" style="fill:var(--ac)"><title>${dl(p.d)}: ${p.v} ${u}</title></circle>`});
+return s+`<text x="2" y="10" style="text-anchor:start">${mx} ${u}</text><text x="2" y="${h+12}" style="text-anchor:start">${mn} ${u} · ${dl(pts[0].d)} to ${dl(pts[pts.length-1].d)}</text></svg>`}
+function vBody(){DB.bd=DB.bd||[];const a=bsorted(),w=a.filter(x=>x.kg),last=w[w.length-1],first=w[0],ht=DB.pf.cm,
+prev=last?w.filter(x=>x.d<=dk(addD(pk(last.d),-7))).pop():null,
+dlt=(v,u)=>(v>0?'+':'')+(r0(v*10)/10)+' '+u,bmi=last&&ht?r0(last.kg/((ht/100)**2)*10)/10:'–',
+mrows=BM.map(([k,l])=>{const s=a.filter(x=>x.m&&x.m[k]);if(!s.length)return '';const f=s[0].m[k],la=s[s.length-1].m[k];return `<div class="item row"><span>${l}</span><span><b>${la} cm</b><small>${s.length>1?dlt(la-f,'cm')+' since the first entry':'first entry'}</small></span></div>`}).join('');
+return `<h1>Body</h1><div class=tiles>${tile('current weight (kg)',last?last.kg:'–')}${tile('change since start',last&&first&&w.length>1?dlt(last.kg-first.kg,'kg'):'–')}${tile('change in 7 days',prev?dlt(last.kg-prev.kg,'kg'):'–')}${tile('BMI',bmi)}</div>
+<div class=card><div class=lab>Log weight and measurements</div><label class=lab>Date<input id=bdt type=date value="${bd}" max="${dk()}" onchange="bd=this.value"></label><label class=lab style="display:block;margin-top:8px">Weight (kg)<input id=bkg inputmode=decimal placeholder="e.g. 62.4"></label><div class=lab style="margin-top:12px">Measurements in cm (optional)</div><div class=g2>${BM.map(([k,l])=>`<label class=lab>${l}<input id=bm_${k} inputmode=decimal></label>`).join('')}</div><button class="btn w" onclick=saveB()>Save</button><p class=note>Measure at the same time of day, for example in the morning. Your latest weight is also used to estimate calories burned.</p></div>
+<h2>Weight trend</h2><div class=card>${line(w.map(x=>({d:x.d,v:x.kg})),'kg')}</div>
+<h2>Measurements</h2><div class=card>${mrows||'<p class=note style="margin:0">No measurements logged yet.</p>'}</div>
+<div class=card><label class=lab>Measurement chart<select id=bs onchange="bsel=this.value;render()" style="width:100%">${BM.map(([k,l])=>`<option value=${k} ${bsel===k?'selected':''}>${l}</option>`).join('')}</select></label>${line(a.filter(x=>x.m&&x.m[bsel]).map(x=>({d:x.d,v:x.m[bsel]})),'cm')}</div>
+<h2>History</h2>${a.length?`<div class=card>${[...a].reverse().slice(0,60).map(x=>`<div class="item row"><div>${dl(x.d)}${x.kg?' · '+x.kg+' kg':''}<small>${BM.filter(([k])=>x.m&&x.m[k]).map(([k,l])=>l.split(' ')[0]+' '+x.m[k]).join(' · ')||'weight only'}</small></div><button class=x onclick="delB('${x.id}')" aria-label="Delete">✕</button></div>`).join('')}</div>`:'<p class=note>Nothing logged yet.</p>'}`}
+function saveB(){const d=$('#bdt').value;if(!d||d>dk()){toast('Pick a valid date');return}
+const raw=$('#bkg').value.trim(),kg=raw?num(raw):null;if(raw&&(isNaN(kg)||kg<20||kg>400)){toast('Enter a weight between 20 and 400 kg');return}
+const m={};for(const [k,l] of BM){const r=$('#bm_'+k).value.trim();if(!r)continue;const v=num(r);if(isNaN(v)||v<5||v>300){toast(l+' should be between 5 and 300 cm');return}m[k]=v}
+if(!kg&&!Object.keys(m).length){toast('Enter your weight or at least one measurement');return}
+DB.bd=DB.bd||[];let e=DB.bd.find(x=>x.d===d);if(!e){e={id:uid(),d,m:{}};DB.bd.push(e)}if(kg)e.kg=kg;Object.assign(e.m,m);
+const l=bsorted().filter(x=>x.kg).pop();if(l){DB.g.kg=l.kg;DB.pf.kg=l.kg}save();render();toast('Saved')}
+function delB(id){DB.bd=(DB.bd||[]).filter(x=>x.id!==id);save();render()}
 /* STATS */
 function vStats(){
 const ds=[];for(let i=sr-1;i>=0;i--)ds.push(dk(addD(new Date(),-i)));const set=new Set(ds),lb=ds.map(d=>sr===7?pk(d).toLocaleDateString(undefined,{weekday:'short'}):''+pk(d).getDate());
